@@ -10,7 +10,7 @@ jobs:
   build:
 
     env:
-     PROJECT: './src/Mapbox.AspNetCore/Mapbox.AspNetCore.csproj'
+     PROJECT: './src/CookieConsent.Razor.Net.csproj'
      
     runs-on: ubuntu-latest
 
