@@ -1,5 +1,5 @@
 ﻿# CookieConsent.Razor.Net
-<img src="/wwwroot/img/cookie-consent-logo.png" width="100" height="100" />
+<img src="/src/wwwroot/img/cookie-consent-logo.png" width="100" height="100" />
 
 [![NuGet latest version](https://badgen.net/nuget/v/CookieConsent.Razor.Net/latest)](https://nuget.org/packages/CookieConsent.Razor.Net)
 [![.NET](https://github.com/phnogues/CookieConsent.Razor.Net/actions/workflows/build.yml/badge.svg)](https://github.com/phnogues/CookieConsent.Razor.Net/actions/workflows/build.yml)
