@@ -1,0 +1,18 @@
+﻿@using CookieConsent.Razor.Net
+@rendermode InteractiveServer
+
+<CookieConsent.Razor.Net.CookieConsentComponent @ref="cookiesConsent" />
+
+<footer class="fixed-bottom text-center">
+    <a href="#" @onclick="ShowCookies">Manage Cookies</a>
+</footer>
+
+@code {
+
+    CookieConsentComponent cookiesConsent;
+
+    public async Task ShowCookies()
+    {
+        await cookiesConsent.ShowModal();
+    }
+}

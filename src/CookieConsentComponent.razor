@@ -1,0 +1,174 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@inject CookieConsentJsInterop CookieConsentJsInterop
+
+<Modal class="cookie-consent-modal" @ref="modal" Title="Cookies & Privacy" UseStaticBackdrop="true" CloseOnEscape="true" IsVerticallyCentered="@_cookieConsentAccessor.Options.ModalVerticallyCentered" OnHiding="OnHidingVolontary">
+    <BodyTemplate>
+        <div class="row cookie-consent-modal-body">
+            <div class="col-sm-2">
+                <img src="_content/CookieConsent.Razor.Net/img/cookie-consent-logo.png" class="img-fluid" />
+            </div>
+            <div class="col-sm-10">
+                <span class="align-middle">
+                    @_cookieConsentAccessor.Options.ModalTitle
+                </span>
+            </div>
+        </div>
+        <br />
+        <Accordion class="cookie-consent-modal-accordion">
+            @if (_cookieConsentAccessor.Options.HasStrictlyNecessaryCookies)
+            {
+                <AccordionItem>
+                    <TitleTemplate>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    @_cookieConsentAccessor.Options.StrictlyNecessaryCookies.Title
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" checked disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </TitleTemplate>
+                    <Content>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th>Domain</th>
+                                    <th>Name</th>
+                                    <th>Privacy policy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cookie in _cookieConsentAccessor.Options.StrictlyNecessaryCookies.Cookies)
+                                {
+                                    <tr>
+                                        <td>@cookie.Domain</td>
+                                        <td>@cookie.Name</td>
+                                        <td class="text-center">
+                                            @if (!string.IsNullOrEmpty(cookie.PrivacyPolicyLink))
+                                            {
+                                                <a href="@cookie.PrivacyPolicyLink" target="_blank">Open</a>
+                                            }
+                                            else
+                                            {
+                                                @cookie.PrivacyPolicyDescription
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </Content>
+                </AccordionItem>
+            }
+
+            @if (_cookieConsentAccessor.Options.HasAnalyticsCookies)
+            {
+                <AccordionItem>
+                    <TitleTemplate>
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    @_cookieConsentAccessor.Options.AnalyticsCookies.Title
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" checked>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </TitleTemplate>
+                    <Content>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th>Domain</th>
+                                    <th>Name</th>
+                                    <th>Privacy policy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cookie in _cookieConsentAccessor.Options.AnalyticsCookies.Cookies)
+                                {
+                                    <tr>
+                                        <td>@cookie.Domain</td>
+                                        <td>@cookie.Name</td>
+                                        <td class="text-center">
+                                            @if (!string.IsNullOrEmpty(cookie.PrivacyPolicyLink))
+                                            {
+                                                <a href="@cookie.PrivacyPolicyLink" target="_blank">Open</a>
+                                            }
+                                            else
+                                            {
+                                                @cookie.PrivacyPolicyDescription
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </Content>
+                </AccordionItem>
+            }
+        </Accordion>
+    </BodyTemplate>
+    <FooterTemplate>
+        <div class="cookie-consent-modal-footer">
+            <a href="#" class="link-secondary" @onclick="OnHideModalClick">@_cookieConsentAccessor.Options.RejectButtonText</a>&nbsp;&nbsp;&nbsp;
+            <Button Color="ButtonColor.Primary" @onclick="OnConfirmClick">@_cookieConsentAccessor.Options.ConfirmButtonText</Button>
+        </div>
+    </FooterTemplate>
+</Modal>
+
+
+@code {
+
+    private Modal modal = default!;
+
+    [Inject]
+    CookieConsentAccessor _cookieConsentAccessor { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _cookieConsentAccessor.CanTrack = true; // change after implementing cookie consent
+    }
+
+    public async Task ShowModal()
+    {
+        await modal.ShowAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && _cookieConsentAccessor.ShowBanner)
+        {
+            await modal.ShowAsync();
+        }
+    }
+
+    public async Task OnConfirmClick()
+    {
+        await CookieConsentJsInterop.Accept();
+        await modal.HideAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        await CookieConsentJsInterop.Deny();
+        await modal.HideAsync();
+    }
+
+    private async Task OnHidingVolontary()
+    {
+        await CookieConsentJsInterop.Accept();
+        await modal.HideAsync();
+    }
+}
