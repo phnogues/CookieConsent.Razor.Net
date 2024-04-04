@@ -12,9 +12,13 @@ public class CookieConsentOptions
 
     public string ConsentCookieName { get; set; } = "CookieConsent";
 
+    public string PrivacyPolicyUrl { get; set; }
+
     public int CookieAcceptedDurationDays { get; set; } = 30;
 
     public int CookieDeniedDurationDays { get; set; } = 4;
+
+    public bool ReloadOnUserActions { get; set; } = true;
 
     public StrictlyNecessaryCookies StrictlyNecessaryCookies { get; set; } = new();
 

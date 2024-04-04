@@ -9,6 +9,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddCookieConsent(options =>
 {
+    options.PrivacyPolicyUrl = "https://www.example.com/privacy-policy";
     options.ConsentCookieName = "DemoProject";
     options.CookieAcceptedDurationDays = 40;
     options.CookieDeniedDurationDays = 5;

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using CookieConsent.Razor.Net
+@inject CookieConsentAccessor _cookieConsentAccessor;
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,6 +18,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="_content/Blazor.Bootstrap/blazor.bootstrap.css" rel="stylesheet" />
 
+     @if (canTrack)
+    {
+      <script>
+          alert('Hey I can track you');
+      </script>
+    }
+
     <HeadOutlet />
 </head>
 
@@ -26,3 +36,14 @@
 </body>
 
 </html>
+
+@code {
+    bool canTrack = false;
+
+    protected override Task OnInitializedAsync()
+    {
+        canTrack = _cookieConsentAccessor != null && _cookieConsentAccessor.CanTrack;
+
+        return base.OnInitializedAsync();
+    }
+}

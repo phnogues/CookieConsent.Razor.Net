@@ -2,7 +2,7 @@
 @inject IJSRuntime JSRuntime
 @inject CookieConsentJsInterop CookieConsentJsInterop
 
-<Modal class="cookie-consent-modal" @ref="modal" Title="Cookies & Privacy" UseStaticBackdrop="true" CloseOnEscape="true" IsVerticallyCentered="@_cookieConsentAccessor.Options.ModalVerticallyCentered" OnHiding="OnHidingVolontary">
+<Modal class="cookie-consent-modal" @ref="modal" Title="Cookies & Privacy" UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="@_cookieConsentAccessor.Options.ModalVerticallyCentered">
     <BodyTemplate>
         <div class="row cookie-consent-modal-body">
             <div class="col-sm-2">
@@ -11,6 +11,11 @@
             <div class="col-sm-10">
                 <span class="align-middle">
                     @_cookieConsentAccessor.Options.ModalTitle
+                    @if (!string.IsNullOrEmpty(_cookieConsentAccessor.Options.PrivacyPolicyUrl))
+                    {
+                        @:&nbsp;
+                        <a href="@_cookieConsentAccessor.Options.PrivacyPolicyUrl" target="_blank">Learn More</a>
+                    }
                 </span>
             </div>
         </div>
@@ -79,7 +84,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" checked>
+                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" @bind="@_cookieConsentAccessor.CanTrack">
 
                                     </div>
                                 </div>
@@ -138,7 +143,7 @@
 
     protected override void OnInitialized()
     {
-        _cookieConsentAccessor.CanTrack = true; // change after implementing cookie consent
+
     }
 
     public async Task ShowModal()
