@@ -58,6 +58,7 @@ Other optional settings:
 3. How to define the list of cookies that will be displayed in the modal? ?
 
 It is very simple ! There are two ways to define your cookies :
+
 a. Programmatically from the registration method
 ```csharp
 builder.Services.AddCookieConsent(options =>
