@@ -8,18 +8,9 @@ function setCookie(cName, cValue, expDays) {
 export function acceptCookies(options) {
     setCookie(options.consentOptions.consentCookieName + '.consent', true, options.consentOptions.cookieAcceptedDurationDays);
     setCookie(options.consentOptions.consentCookieName + '.canTrack', options.canTrack, options.consentOptions.cookieAcceptedDurationDays);
-
-    if (options.consentOptions.reloadOnUserActions == 'true') {
-        location.reload();
-    }
 }
 
 export function denyCookies(options) {
     setCookie(options.consentOptions.consentCookieName + '.consent', false, options.consentOptions.cookieDeniedDurationDays);
     setCookie(options.consentOptions.consentCookieName + '.canTrack', false, options.consentOptions.cookieDeniedDurationDays);
-
-    if (options.consentOptions.reloadOnUserActions == 'true') {
-        location.reload();
-
-    }
 }

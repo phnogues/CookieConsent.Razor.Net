@@ -18,7 +18,7 @@ public class CookieConsentOptions
 
     public int CookieDeniedDurationDays { get; set; } = 4;
 
-    public bool ReloadOnUserActions { get; set; } = true;
+    public bool ReloadPageOnUserActions { get; set; } = true;
 
     public StrictlyNecessaryCookies StrictlyNecessaryCookies { get; set; } = new();
 

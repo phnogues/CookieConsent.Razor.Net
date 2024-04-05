@@ -1,6 +1,7 @@
 ﻿@using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @inject CookieConsentJsInterop CookieConsentJsInterop
+@inject NavigationManager NavigationManager
 
 <Modal class="cookie-consent-modal" @ref="modal" Title="Cookies & Privacy" UseStaticBackdrop="true" CloseOnEscape="false" IsVerticallyCentered="@_cookieConsentAccessor.Options.ModalVerticallyCentered">
     <BodyTemplate>
@@ -161,19 +162,33 @@
 
     public async Task OnConfirmClick()
     {
-        await CookieConsentJsInterop.Accept();
+        await CookieConsentJsInterop.Accept(_cookieConsentAccessor.CanTrack);
         await modal.HideAsync();
+
+        RefreshIfNeedeed();
     }
 
     private async Task OnHideModalClick()
     {
         await CookieConsentJsInterop.Deny();
         await modal.HideAsync();
+
+        RefreshIfNeedeed();
     }
 
     private async Task OnHidingVolontary()
     {
-        await CookieConsentJsInterop.Accept();
+        await CookieConsentJsInterop.Accept(_cookieConsentAccessor.CanTrack);
         await modal.HideAsync();
+
+        RefreshIfNeedeed();
+    }
+
+    private void RefreshIfNeedeed()
+    {
+        if (_cookieConsentAccessor.Options.ReloadPageOnUserActions)
+        {
+            NavigationManager.Refresh(true);
+        }
     }
 }

@@ -15,7 +15,7 @@ public class CookieConsentJsInterop : IAsyncDisposable
         _cookieConsentAccessor = cookieConsentAccessor;
     }
 
-    public async Task Accept()
+    public async Task Accept(bool canTrack)
     {
         var module = await _moduleTask.Value;
 
@@ -23,7 +23,7 @@ public class CookieConsentJsInterop : IAsyncDisposable
         {
             ConsentOptions = _cookieConsentAccessor.Options,
             Consent = true,
-            CanTrack = _cookieConsentAccessor.CanTrack
+            CanTrack = canTrack
         };
 
         await module.InvokeVoidAsync("acceptCookies", cookieOptions);
