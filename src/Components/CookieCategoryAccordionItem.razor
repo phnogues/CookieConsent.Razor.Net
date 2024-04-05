@@ -1,0 +1,78 @@
+﻿@if (Cookies is not null && Cookies.Any())
+{
+    <AccordionItem>
+        <TitleTemplate>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10">
+                        @Title
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" @bind="@IsEnabled" disabled="@(Disabled)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </TitleTemplate>
+        <Content>
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-secondary">
+                        <th>Domain</th>
+                        <th>Name</th>
+                        <th>Privacy policy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cookie in Cookies)
+                    {
+                        <tr>
+                            <td>@cookie.Domain</td>
+                            <td>@cookie.Name</td>
+                            <td class="text-center">
+                                @if (!string.IsNullOrEmpty(cookie.PrivacyPolicyLink))
+                                {
+                                    <a href="@cookie.PrivacyPolicyLink" target="_blank">Open</a>
+                                }
+                                else
+                                {
+                                    @cookie.PrivacyPolicyDescription
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Content>
+    </AccordionItem>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public List<CookieConsentCookies> Cookies { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+
+    private bool _isEnabled;
+
+    [Parameter]
+    public bool IsEnabled
+    {
+        get => _isEnabled;
+        set
+        {
+            if (_isEnabled == value) return;
+            _isEnabled = value;
+            IsEnabledChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> IsEnabledChanged { get; set; }
+}

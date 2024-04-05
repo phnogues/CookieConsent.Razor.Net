@@ -1,0 +1,62 @@
+﻿@inject CookieConsentAccessor _cookieConsentAccessor;
+
+@if (_cookieConsentAccessor is not null)
+{
+    @switch (CookieType)
+    {
+        case CookieTypeEnum.Marketing:
+
+            if (_cookieConsentAccessor.MarketingEnabled)
+            {
+                @ChildContent
+            }
+            break;
+
+        case CookieTypeEnum.Preferences:
+
+            if (_cookieConsentAccessor.PreferencesEnabled)
+            {
+                @ChildContent
+            }
+            break;
+
+        case CookieTypeEnum.Analytics:
+
+            if (_cookieConsentAccessor.AnalyticsEnabled)
+            {
+                @ChildContent
+            }
+            break;
+
+        case CookieTypeEnum.Functional:
+            @ChildContent
+            break;
+    }
+}
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        _cookieConsentAccessor.RegisterCookie(CookieType, Domain, CookieNames, PrivacyPolicyDescription, PrivacyPolicyLink);
+        return base.OnInitializedAsync();
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public CookieTypeEnum CookieType { get; set; }
+
+    [Parameter]
+    public string Domain { get; set; }
+
+    [Parameter]
+    public string CookieNames { get; set; }
+
+    [Parameter]
+    public string PrivacyPolicyLink { get; set; }
+
+    [Parameter]
+    public string PrivacyPolicyDescription { get; set; }
+}

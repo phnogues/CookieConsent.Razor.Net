@@ -7,10 +7,15 @@ function setCookie(cName, cValue, expDays) {
 
 export function acceptCookies(options) {
     setCookie(options.consentOptions.consentCookieName + '.consent', true, options.consentOptions.cookieAcceptedDurationDays);
-    setCookie(options.consentOptions.consentCookieName + '.canTrack', options.canTrack, options.consentOptions.cookieAcceptedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.marketing', options.marketingEnabled, options.consentOptions.cookieAcceptedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.preferences', options.preferencesEnabled, options.consentOptions.cookieAcceptedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.analytics', options.analyticsEnabled, options.consentOptions.cookieAcceptedDurationDays);
+
 }
 
 export function denyCookies(options) {
     setCookie(options.consentOptions.consentCookieName + '.consent', false, options.consentOptions.cookieDeniedDurationDays);
-    setCookie(options.consentOptions.consentCookieName + '.canTrack', false, options.consentOptions.cookieDeniedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.marketing', false, options.consentOptions.cookieDeniedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.preferences', false, options.consentOptions.cookieAcceptedDurationDays);
+    setCookie(options.consentOptions.consentCookieName + '.analytics', false, options.consentOptions.cookieAcceptedDurationDays);
 }

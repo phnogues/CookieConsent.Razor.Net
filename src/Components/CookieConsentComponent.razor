@@ -22,108 +22,10 @@
         </div>
         <br />
         <Accordion class="cookie-consent-modal-accordion">
-            @if (_cookieConsentAccessor.Options.HasStrictlyNecessaryCookies)
-            {
-                <AccordionItem>
-                    <TitleTemplate>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    @_cookieConsentAccessor.Options.StrictlyNecessaryCookies.Title
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" checked disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </TitleTemplate>
-                    <Content>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr class="table-secondary">
-                                    <th>Domain</th>
-                                    <th>Name</th>
-                                    <th>Privacy policy</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var cookie in _cookieConsentAccessor.Options.StrictlyNecessaryCookies.Cookies)
-                                {
-                                    <tr>
-                                        <td>@cookie.Domain</td>
-                                        <td>@cookie.Name</td>
-                                        <td class="text-center">
-                                            @if (!string.IsNullOrEmpty(cookie.PrivacyPolicyLink))
-                                            {
-                                                <a href="@cookie.PrivacyPolicyLink" target="_blank">Open</a>
-                                            }
-                                            else
-                                            {
-                                                @cookie.PrivacyPolicyDescription
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-
-                    </Content>
-                </AccordionItem>
-            }
-
-            @if (_cookieConsentAccessor.Options.HasAnalyticsCookies)
-            {
-                <AccordionItem>
-                    <TitleTemplate>
-                        <div class="container-fluid">
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    @_cookieConsentAccessor.Options.AnalyticsCookies.Title
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="switchCookieAnalytics" @bind="@_cookieConsentAccessor.CanTrack">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </TitleTemplate>
-                    <Content>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr class="table-secondary">
-                                    <th>Domain</th>
-                                    <th>Name</th>
-                                    <th>Privacy policy</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var cookie in _cookieConsentAccessor.Options.AnalyticsCookies.Cookies)
-                                {
-                                    <tr>
-                                        <td>@cookie.Domain</td>
-                                        <td>@cookie.Name</td>
-                                        <td class="text-center">
-                                            @if (!string.IsNullOrEmpty(cookie.PrivacyPolicyLink))
-                                            {
-                                                <a href="@cookie.PrivacyPolicyLink" target="_blank">Open</a>
-                                            }
-                                            else
-                                            {
-                                                @cookie.PrivacyPolicyDescription
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </Content>
-                </AccordionItem>
-            }
+            <CookieCategoryAccordionItem Title="@_cookieConsentAccessor.Options.FunctionalCookies.Title" Cookies="@_cookieConsentAccessor.Options.FunctionalCookies.Cookies" IsEnabled="true" Disabled="true"></CookieCategoryAccordionItem>
+            <CookieCategoryAccordionItem Title="@_cookieConsentAccessor.Options.MarketingCookies.Title" Cookies="@_cookieConsentAccessor.Options.MarketingCookies.Cookies" @bind-IsEnabled="@_cookieConsentAccessor.MarketingEnabled"></CookieCategoryAccordionItem>
+            <CookieCategoryAccordionItem Title="@_cookieConsentAccessor.Options.PreferencesCookies.Title" Cookies="@_cookieConsentAccessor.Options.PreferencesCookies.Cookies" IsEnabled="@_cookieConsentAccessor.PreferencesEnabled"></CookieCategoryAccordionItem>
+            <CookieCategoryAccordionItem Title="@_cookieConsentAccessor.Options.AnalyticsCookies.Title" Cookies="@_cookieConsentAccessor.Options.AnalyticsCookies.Cookies" IsEnabled="@_cookieConsentAccessor.AnalyticsEnabled"></CookieCategoryAccordionItem>
         </Accordion>
     </BodyTemplate>
     <FooterTemplate>
@@ -134,18 +36,12 @@
     </FooterTemplate>
 </Modal>
 
-
 @code {
 
     private Modal modal = default!;
 
     [Inject]
     CookieConsentAccessor _cookieConsentAccessor { get; set; }
-
-    protected override void OnInitialized()
-    {
-
-    }
 
     public async Task ShowModal()
     {
@@ -162,7 +58,7 @@
 
     public async Task OnConfirmClick()
     {
-        await CookieConsentJsInterop.Accept(_cookieConsentAccessor.CanTrack);
+        await CookieConsentJsInterop.Accept(_cookieConsentAccessor.MarketingEnabled, _cookieConsentAccessor.AnalyticsEnabled, _cookieConsentAccessor.PreferencesEnabled);
         await modal.HideAsync();
 
         RefreshIfNeedeed();
@@ -171,14 +67,6 @@
     private async Task OnHideModalClick()
     {
         await CookieConsentJsInterop.Deny();
-        await modal.HideAsync();
-
-        RefreshIfNeedeed();
-    }
-
-    private async Task OnHidingVolontary()
-    {
-        await CookieConsentJsInterop.Accept(_cookieConsentAccessor.CanTrack);
         await modal.HideAsync();
 
         RefreshIfNeedeed();

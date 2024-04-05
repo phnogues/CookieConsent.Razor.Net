@@ -1,5 +1,5 @@
 using BlazorApp.Components;
-using CookieConsent.Razor.Net.Middlewares;
+using CookieConsent.Razor.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Services.AddCookieConsent(options =>
     options.ConsentCookieName = "DemoProject";
     options.CookieAcceptedDurationDays = 40;
     options.CookieDeniedDurationDays = 5;
-    options.StrictlyNecessaryCookies = new()
+    options.FunctionalCookies = new()
     {
         Cookies = new()
                     {
@@ -31,7 +31,7 @@ builder.Services.AddCookieConsent(options =>
                         }
                     }
     };
-    options.AnalyticsCookies = new()
+    options.MarketingCookies = new()
     {
         Cookies = new()
                 {

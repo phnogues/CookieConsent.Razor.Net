@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CookieConsent.Razor.Net.Middlewares;
+namespace CookieConsent.Razor.Net;
 
 public static class CookieConsentMiddlewareExtensions
 {

@@ -20,27 +20,49 @@ public class CookieConsentOptions
 
     public bool ReloadPageOnUserActions { get; set; } = true;
 
-    public StrictlyNecessaryCookies StrictlyNecessaryCookies { get; set; } = new();
+    public StrictlyNecessaryCookies FunctionalCookies { get; set; } = new();
+
+    public MarketingCookies MarketingCookies { get; set; } = new();
 
     public AnalyticsCookies AnalyticsCookies { get; set; } = new();
 
+    public PreferencesCookies PreferencesCookies { get; set; } = new();
+
+    public bool HasMarketingCookies => MarketingCookies.Cookies != null && MarketingCookies.Cookies.Any();
+
+    public bool HasFunctionalCookies => FunctionalCookies.Cookies != null && FunctionalCookies.Cookies.Any();
+
     public bool HasAnalyticsCookies => AnalyticsCookies.Cookies != null && AnalyticsCookies.Cookies.Any();
 
-    public bool HasStrictlyNecessaryCookies => StrictlyNecessaryCookies.Cookies != null && StrictlyNecessaryCookies.Cookies.Any();
+    public bool HasPreferencesCookies => PreferencesCookies.Cookies != null && PreferencesCookies.Cookies.Any();
 }
 
 public class StrictlyNecessaryCookies
 {
     public string Title { get; set; } = "Strictly Necessary";
 
-    public List<CookieConsentCookies> Cookies { get; set; }
+    public List<CookieConsentCookies> Cookies { get; set; } = new();
 }
 
 public class AnalyticsCookies
 {
     public string Title { get; set; } = "Analytics";
 
-    public List<CookieConsentCookies> Cookies { get; set; }
+    public List<CookieConsentCookies> Cookies { get; set; } = new();
+}
+
+public class MarketingCookies
+{
+    public string Title { get; set; } = "Marketing";
+
+    public List<CookieConsentCookies> Cookies { get; set; } = new();
+}
+
+public class PreferencesCookies
+{
+    public string Title { get; set; } = "Preferences";
+
+    public List<CookieConsentCookies> Cookies { get; set; } = new();
 }
 
 public class CookieConsentCookies
@@ -49,7 +71,7 @@ public class CookieConsentCookies
 
     public string Name { get; set; }
 
-    public string PrivacyPolicyLink { get; set; }
+    public string? PrivacyPolicyLink { get; set; }
 
-    public string PrivacyPolicyDescription { get; set; }
+    public string? PrivacyPolicyDescription { get; set; }
 }
