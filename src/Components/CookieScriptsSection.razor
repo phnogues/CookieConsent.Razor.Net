@@ -1,6 +1,6 @@
 ﻿@inject CookieConsentAccessor _cookieConsentAccessor;
 
-@if (_cookieConsentAccessor is not null)
+@if (_cookieConsentAccessor is not null && !_cookieConsentAccessor.ShowBanner)
 {
     @switch (CookieType)
     {

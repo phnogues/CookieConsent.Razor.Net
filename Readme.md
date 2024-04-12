@@ -116,7 +116,18 @@ You can add as many `CookieScriptsSection` components as you want.
 You can also mix beetween programmatically and component way.
 
 5. Change the style of the modal
-Add a CSS file in your `wwwroot` folder and you will be able to override the default style of the modal.
+Add a CSS file in your `wwwroot` folder and you will be able to override the default style of the modal like : 
+
+```css
+/* override cookie consent modal styles here */
+.cookie-consent-modal .modal-header {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.cookie-consent-modal .modal-title{
+    color: white;
+}
+```
 
 ### Thanks
 - Icon <a href="https://www.flaticon.com/fr/icones-gratuites/biscuit" title="biscuit icônes">Biscuit icônes créées par juicy_fish - Flaticon</a>
