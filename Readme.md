@@ -4,7 +4,7 @@
 [![NuGet latest version](https://badgen.net/nuget/v/CookieConsent.Razor.Net/latest)](https://nuget.org/packages/CookieConsent.Razor.Net)
 [![.NET](https://github.com/phnogues/CookieConsent.Razor.Net/actions/workflows/build.yml/badge.svg)](https://github.com/phnogues/CookieConsent.Razor.Net/actions/workflows/build.yml)
 
-Demo : https://pierrehenri56-001-site10.ltempurl.com/
+Demo : https://demo-cookies.pierrehenri.fr
 
 ## Description
 A Consent Management library for Blazor, ASP.NET Core Razor Pages and MVC applications. It provides a simple way to manage user consent for cookies and tracking scripts.
