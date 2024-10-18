@@ -2,7 +2,9 @@
 
 public class CookieConsentOptions
 {
-    public string ModalTitle { get; set; } = "This website uses cookies to ensure you get the best experience on our website.";
+    public string ModalTitle { get; set; } = "Cookies & Privacy";
+
+    public string ModalText { get; set; } = "This website uses cookies to ensure you get the best experience on our website.";
 
     public bool ModalVerticallyCentered { get; set; } = true;
 
@@ -11,6 +13,8 @@ public class CookieConsentOptions
     public string RejectButtonText { get; set; } = "Reject";
 
     public string ConsentCookieName { get; set; } = "CookieConsent";
+
+    public string LearnMoreText { get; set; } = "Learn More";
 
     public string PrivacyPolicyUrl { get; set; }
 
